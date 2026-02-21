@@ -1,0 +1,10 @@
+project_id = "lelliqlfdpgxbmbsdhtz"
+
+[functions.analyze-cv]
+verify_jwt = false
+
+[functions.interview-ai]
+verify_jwt = false
+
+[functions.transcribe-audio]
+verify_jwt = false
