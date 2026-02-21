@@ -11,15 +11,9 @@ import Interviewer3D from "@/components/Interviewer3D";
 import api from "@/lib/api"; 
 import { getSocket } from "@/lib/socket";
 import PageTransition from "@/components/PageTransition"; 
-<<<<<<< HEAD
 import { motion, AnimatePresence } from "framer-motion";
 // Import the new background component
 import ContourBackground from "@/components/ContourBackground";
-=======
-import LiveTerminal from "@/components/LiveTerminal";
-import NeuralSpine from "@/components/NeuralSpine";
-import { motion, AnimatePresence } from "framer-motion";
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
 
 // --- HELPER COMPONENTS ---
 
@@ -149,10 +143,6 @@ const Index = () => {
     { name: "Cloud / DevOps", value: 82, trend: 8.4, color: "bg-orange-500" },
   ]);
 
-<<<<<<< HEAD
-=======
-  // ✅ UPDATED: Salaries in Indian Rupee (Lakhs per Annum)
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
   const [salaries, setSalaries] = useState([
     { role: "Staff Engineer", range: "₹45L - ₹80L", trend: 12.4 },
     { role: "Eng. Lead", range: "₹32L - ₹60L", trend: 6.8 },
@@ -215,76 +205,25 @@ const Index = () => {
     };
   }, [socket]);
 
-<<<<<<< HEAD
-=======
-  // Layout Helpers
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
   const featuredNews = newsFeed.length > 0 ? newsFeed[0] : null;
   const listNews = newsFeed.length > 1 ? newsFeed.slice(1) : []; 
 
   return (
     <PageTransition> 
-      <div className="min-h-screen text-white font-sans selection:bg-cyan-500/30 relative overflow-x-hidden">
+      <div className="min-h-screen text-white font-sans selection:bg-cyan-500/30 relative overflow-x-hidden bg-black">
         <Navbar />
 
         {/* --- FIXED BACKGROUND LAYER --- */}
         <div className="fixed inset-0 z-0 pointer-events-none">
-<<<<<<< HEAD
             {/* Integrated the Gradient Horizon background */}
             <ContourBackground />
         </div>
 
-=======
-            {/* 1. Deep Space Gradient */}
-            <div 
-              className="absolute inset-0"
-              style={{ background: "linear-gradient(180deg, #02040a 0%, #060b14 100%)" }}
-            />
-            
-            {/* 2. Noise Texture */}
-            <div 
-              className="absolute inset-0 opacity-[0.03]"
-              style={{
-                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-              }}
-            />
-            
-            {/* 3. Grid Overlay */}
-            <div 
-              className="absolute inset-0 opacity-[0.03]"
-              style={{
-                backgroundImage: `
-                  linear-gradient(rgba(0, 245, 255, 0.4) 1px, transparent 1px),
-                  linear-gradient(90deg, rgba(0, 245, 255, 0.4) 1px, transparent 1px)
-                `,
-                backgroundSize: "60px 60px"
-              }}
-            />
-
-            {/* 4. Ambient Glow Spots */}
-            <div className="absolute top-[-20%] left-[-10%] w-[800px] h-[800px] bg-cyan-900/10 blur-[150px] rounded-full animate-pulse" />
-            <div className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] bg-blue-900/10 blur-[150px] rounded-full" />
-
-            {/* --- 5. NEURAL SPINE (FIXED LEFT EDGE) --- */}
-            <div className="absolute left-0 top-[10%] h-full hidden xl:block z-0 opacity-100 pointer-events-auto">
-               <NeuralSpine />
-            </div>
-        </div>
-
-        {/* --- SCROLLABLE CONTENT --- */}
-        
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
         {/* --- HERO SECTION --- */}
         <section className="relative pt-32 pb-16 lg:pt-48 lg:pb-12 px-12 min-h-screen flex flex-col justify-center z-10">
           <div className="w-full max-w-[1800px] mx-auto px-6 lg:px-16 grid lg:grid-cols-2 gap-12 items-center">
             
-<<<<<<< HEAD
             <div className={`space-y-8 xl:pl-48 ${mounted ? 'animate-in fade-in slide-in-from-bottom-8 duration-1000' : 'opacity-0'}`}>
-=======
-            {/* TEXT CONTAINER - PUSHED RIGHT TO AVOID SPINE */}
-            <div className={`space-y-8 xl:pl-48 ${mounted ? 'animate-in fade-in slide-in-from-bottom-8 duration-1000' : 'opacity-0'}`}>
-              
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
               <h1 className="text-5xl lg:text-6xl font-bold tracking-tight text-white leading-[1.1]">
                 The Benchmark for <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 drop-shadow-[0_0_10px_rgba(34,211,238,0.3)]">
@@ -325,10 +264,6 @@ const Index = () => {
                 </div>
 
                 <div className="relative">
-<<<<<<< HEAD
-=======
-                    {/* Connecting Line */}
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
                     <div className="hidden md:block absolute top-10 left-0 right-0 h-0.5 bg-white/5 -z-10">
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent" />
                     </div>
@@ -447,11 +382,7 @@ const Index = () => {
             </div>
         </section>
 
-<<<<<<< HEAD
         {/* --- LATEST NEWS --- */}
-=======
-        {/* --- LATEST NEWS (SCROLLABLE FEED) --- */}
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
         <section className="py-24 relative z-10">
             <div className="max-w-7xl mx-auto px-6">
               <div className="mb-12">
@@ -459,7 +390,6 @@ const Index = () => {
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-<<<<<<< HEAD
                   {featuredNews && (
                     <div className="lg:col-span-5 sticky top-32">
                        <motion.div 
@@ -472,22 +402,6 @@ const Index = () => {
                          <div className="absolute inset-0 bg-gradient-to-br from-cyan-900/20 to-blue-900/20" />
                          
                          <div className="relative h-full p-10 flex flex-col justify-end z-10">
-=======
-                  
-                  {/* FEATURED STORY */}
-                  {featuredNews && (
-                    <div className="lg:col-span-5 sticky top-32">
-                       <motion.div 
-                          layoutId={`card-${featuredNews.id}`}
-                          className="relative h-[600px] rounded-3xl overflow-hidden bg-white/[0.02] border border-white/10 cursor-pointer group shadow-2xl backdrop-blur-sm"
-                          onClick={() => setSelectedNews(featuredNews)}
-                          whileHover={{ scale: 1.01 }}
-                       >
-                          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-90" />
-                          <div className="absolute inset-0 bg-gradient-to-br from-cyan-900/20 to-blue-900/20" />
-                          
-                          <div className="relative h-full p-10 flex flex-col justify-end z-10">
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
                              <div className="mb-6">
                                 <span className="px-3 py-1.5 rounded-full bg-cyan-500 text-black text-xs font-bold uppercase tracking-wide shadow-[0_0_15px_rgba(6,182,212,0.4)]">
                                   {featuredNews.type}
@@ -502,19 +416,11 @@ const Index = () => {
                              <div className="flex items-center text-sm font-bold text-white uppercase tracking-widest">
                                 Read Article <ArrowRight className="ml-2 w-4 h-4" />
                              </div>
-<<<<<<< HEAD
                          </div>
-=======
-                          </div>
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
                        </motion.div>
                     </div>
                   )}
 
-<<<<<<< HEAD
-=======
-                  {/* NEWS FEED */}
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
                   <div className="lg:col-span-7 h-[600px] overflow-y-auto custom-scrollbar pr-4">
                      <div className="grid sm:grid-cols-2 gap-6 pb-4">
                         {listNews.map((item) => (
@@ -525,11 +431,7 @@ const Index = () => {
                               onClick={() => setSelectedNews(item)}
                               whileHover={{ y: -3 }}
                            >
-<<<<<<< HEAD
                              <div>
-=======
-                              <div>
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
                                   <div className="flex justify-between items-start mb-4">
                                       <span className="text-xs font-bold text-cyan-400 uppercase tracking-wider">{item.type}</span>
                                       <span className="text-xs text-gray-500">{item.time}</span>
@@ -540,39 +442,22 @@ const Index = () => {
                                   <p className="text-xs text-gray-500 line-clamp-3 leading-relaxed">
                                       {item.summary}
                                   </p>
-<<<<<<< HEAD
                              </div>
                              <div className="mt-4 flex items-center justify-between border-t border-white/5 pt-4">
-=======
-                              </div>
-                              <div className="mt-4 flex items-center justify-between border-t border-white/5 pt-4">
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
                                   <span className="text-xs font-medium text-gray-400 group-hover:text-white transition-colors">Read more</span>
                                   <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-gray-400 group-hover:bg-cyan-500/20 group-hover:text-cyan-400 transition-colors">
                                       <ArrowRight className="w-4 h-4" />
                                   </div>
-<<<<<<< HEAD
                              </div>
-=======
-                              </div>
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
                            </motion.div>
                         ))}
                      </div>
                   </div>
-<<<<<<< HEAD
-=======
-
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
               </div>
             </div>
         </section>
 
-<<<<<<< HEAD
         {/* --- NEWS MODAL --- */}
-=======
-        {/* --- GLOBAL CARD OVERLAY --- */}
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
         <AnimatePresence>
             {selectedNews && (
                 <>
@@ -624,16 +509,6 @@ const Index = () => {
             )}
         </AnimatePresence>
 
-<<<<<<< HEAD
-=======
-        {/* --- TERMINAL & FOOTER --- */}
-        <section className="relative z-10 w-full pt-10">
-            <div className="w-full bg-transparent">
-                <LiveTerminal className="w-full bg-transparent border-none !bg-opacity-0" />
-            </div>
-        </section>
-
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
         <footer className="relative pt-10 pb-10 z-10 bg-transparent border-t border-white/5">
           <div className="text-center text-gray-600 text-sm">
             &copy; 2025 Prepnerve AI Systems. All rights reserved.
@@ -644,8 +519,4 @@ const Index = () => {
   );
 };
 
-<<<<<<< HEAD
 export default Index;
-=======
-export default Index;
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
