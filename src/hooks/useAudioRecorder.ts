@@ -23,27 +23,18 @@ export function useAudioRecorder(): UseAudioRecorderReturn {
       setError(null);
       chunksRef.current = [];
       
-<<<<<<< HEAD
-=======
-      // FIXED: Removed hardcoded sampleRate to allow high-quality native audio
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: {
           channelCount: 1,
           echoCancellation: true,
           noiseSuppression: true,
           autoGainControl: true,
-<<<<<<< HEAD
-=======
-          // Removed sampleRate: 16000 to prevent downsampling artifacts
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
         }
       });
       
       streamRef.current = stream;
       
-<<<<<<< HEAD
-      // Determine supported mime type
+      // Determine supported mime type (improves cross-browser support like Safari)
       let mimeType = 'audio/webm';
       if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) {
         mimeType = 'audio/webm;codecs=opus';
@@ -53,35 +44,19 @@ export function useAudioRecorder(): UseAudioRecorderReturn {
 
       const options = {
         mimeType,
-        audioBitsPerSecond: 128000
-=======
-      // FIXED: Added higher bitrate for better clarity
-      const options = {
-        mimeType: MediaRecorder.isTypeSupported('audio/webm;codecs=opus') 
-          ? 'audio/webm;codecs=opus' 
-          : 'audio/webm',
-        audioBitsPerSecond: 128000 // Higher quality (128kbps)
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
+        audioBitsPerSecond: 128000 // Higher quality (128kbps) for better Whisper transcription
       };
 
       const mediaRecorder = new MediaRecorder(stream, options);
       
       mediaRecorder.ondataavailable = (e) => {
-<<<<<<< HEAD
         if (e.data && e.data.size > 0) {
-=======
-        if (e.data.size > 0) {
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
           chunksRef.current.push(e.data);
         }
       };
       
       mediaRecorderRef.current = mediaRecorder;
-<<<<<<< HEAD
-      mediaRecorder.start(); // No timeslice ensures smoother capture for short audio
-=======
-      mediaRecorder.start(1000); 
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
+      mediaRecorder.start(); // No timeslice ensures smoother capture for short audio clips
       
       setIsRecording(true);
       setRecordingTime(0);
@@ -92,11 +67,7 @@ export function useAudioRecorder(): UseAudioRecorderReturn {
       
     } catch (err) {
       console.error('Error starting recording:', err);
-<<<<<<< HEAD
-      setError('Microphone access failed. Check permissions.');
-=======
       setError('Failed to access microphone. Please check permissions.');
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
     }
   }, []);
 
@@ -114,37 +85,22 @@ export function useAudioRecorder(): UseAudioRecorderReturn {
       }
       
       mediaRecorderRef.current.onstop = () => {
-<<<<<<< HEAD
         const mimeType = mediaRecorderRef.current?.mimeType || 'audio/webm';
         const blob = new Blob(chunksRef.current, { type: mimeType });
         
-        // Cleanup tracks
-=======
-        const blob = new Blob(chunksRef.current, { 
-          type: mediaRecorderRef.current?.mimeType || 'audio/webm' 
-        });
-        chunksRef.current = [];
-        
-        // Stop all tracks
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
+        // Stop all tracks to release microphone hardware
         if (streamRef.current) {
           streamRef.current.getTracks().forEach(track => track.stop());
           streamRef.current = null;
         }
         
-<<<<<<< HEAD
         chunksRef.current = [];
-=======
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
         setIsRecording(false);
         resolve(blob);
       };
       
-<<<<<<< HEAD
-      // Request final data before stopping
+      // Request final data chunk before stopping to guarantee no audio is lost
       mediaRecorderRef.current.requestData(); 
-=======
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
       mediaRecorderRef.current.stop();
     });
   }, []);

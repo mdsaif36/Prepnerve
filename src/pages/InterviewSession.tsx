@@ -8,27 +8,16 @@ import {
 import Interviewer3D, { InterviewState } from "@/components/Interviewer3D";
 import CodeEditor from "@/components/CodeEditor";
 import Navbar from "@/components/Navbar";
-<<<<<<< HEAD
 import NeuralSpine from "@/components/NeuralSpine";
-=======
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useSpeechSynthesis } from "@/hooks/useSpeechSynthesis";
 import { useProctoring } from "@/hooks/useProctoring";
 import { useAuth } from "@/hooks/useAuth"; 
-<<<<<<< HEAD
 import { useAudioRecorder } from "@/hooks/useAudioRecorder"; 
 
 const SERVER_URL = "http://localhost:8000";
-=======
-
-const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-
-// Direct reference to your Groq-powered Node.js server
-const SERVER_URL = "https://prepnerveserver.onrender.com/api/interview";
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
 
 const InterviewSession = () => {
   const navigate = useNavigate();
@@ -36,7 +25,6 @@ const InterviewSession = () => {
   const { user } = useAuth(); 
   
   const topic = location.state?.topic || "Full Stack Developer";
-<<<<<<< HEAD
   const resumeData = location.state?.resumeData; 
   const selectedDuration = location.state?.duration || 30; 
 
@@ -45,45 +33,25 @@ const InterviewSession = () => {
 
   // --- STATE ---
   const [sessionId, setSessionId] = useState<string | null>(null);
-=======
-  const resumeData = location.state?.resumeData;
-  const selectedDuration = location.state?.duration || 30; 
-
-  const { speak, stop: stopSpeaking, isSpeaking } = useSpeechSynthesis();
-
-  // --- STATE ---
-  const [sessionId, setSessionId] = useState<number | null>(null);
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
   const [loading, setLoading] = useState(true);
   
   const [currentQuestionText, setCurrentQuestionText] = useState("");
   const [displayedText, setDisplayedText] = useState("");
-<<<<<<< HEAD
   
   const [interviewState, setInterviewState] = useState<InterviewState>('idle');
   const [userTranscript, setUserTranscript] = useState("");
   const [neuralWords, setNeuralWords] = useState<{word: string, description: string}[]>([]);
   const [isProcessingAudio, setIsProcessingAudio] = useState(false); 
   
-=======
-  const [isRecording, setIsRecording] = useState(false);
-  const [interviewState, setInterviewState] = useState<InterviewState>('idle');
-  const [userTranscript, setUserTranscript] = useState("");
-  
-  const recognitionRef = useRef<any>(null);
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
   const [timeLeft, setTimeLeft] = useState(selectedDuration * 60);
   const [isCoding, setIsCoding] = useState(false); 
   const [starterCode, setStarterCode] = useState("// Code will appear here if AI requests it...");
 
   const [showWarning, setShowWarning] = useState(false);
 
-<<<<<<< HEAD
   // ✅ NEW: Ref to track exactly how long the user recorded
   const recordingStartTime = useRef<number>(0);
 
-=======
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
   // --- PROCTORING ---
   const { violationCount, triggerFullScreen, isFullScreen, lastViolationType } = useProctoring({
     active: !loading && sessionId !== null, 
@@ -96,14 +64,7 @@ const InterviewSession = () => {
 
   useEffect(() => {
     triggerFullScreen();
-<<<<<<< HEAD
     const forceFs = () => { triggerFullScreen(); window.removeEventListener('click', forceFs); };
-=======
-    const forceFs = () => {
-        triggerFullScreen();
-        window.removeEventListener('click', forceFs);
-    };
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
     window.addEventListener('click', forceFs);
     return () => window.removeEventListener('click', forceFs);
   }, [triggerFullScreen]);
@@ -116,52 +77,33 @@ const InterviewSession = () => {
     }
   }, [violationCount]);
 
-<<<<<<< HEAD
   // INITIALIZE SESSION
-=======
-  // INITIALIZE SESSION via Node.js Server (Groq)
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
   useEffect(() => {
     const initSession = async () => {
       try {
         setInterviewState('preparing');
         const userEmail = user?.email || "guest@prepnerve.com";
-<<<<<<< HEAD
         const safeResumeData = typeof resumeData === 'object' ? JSON.stringify(resumeData) : (resumeData || "");
-=======
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
 
         const res = await axios.post(`${SERVER_URL}/start`, {
             email: userEmail,
             topic: topic,
-<<<<<<< HEAD
             resumeData: safeResumeData
-=======
-            resumeData: resumeData
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
         });
 
         setSessionId(res.data.sessionId);
         setCurrentQuestionText(res.data.question);
-<<<<<<< HEAD
         if (res.data.neural_keywords) {
             setNeuralWords(res.data.neural_keywords.map((w: string) => ({ word: w, description: "Context Loaded" })));
         }
         setLoading(false);
         setInterviewState('idle');
       } catch (err) {
-=======
-        setLoading(false);
-        setInterviewState('idle');
-        
-      } catch (err) {
         console.error(err);
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
         toast.error("Failed to connect to Neural Server.");
         setLoading(false);
       }
     };
-<<<<<<< HEAD
     initSession(); 
   }, [user, topic, resumeData, navigate]);
 
@@ -169,28 +111,6 @@ const InterviewSession = () => {
   useEffect(() => {
     if (!currentQuestionText) return;
     window.speechSynthesis.cancel();
-=======
-
-    if (user) {
-        initSession();
-    } else {
-        setTimeout(() => {
-            if (!user) {
-                toast.error("Authentication required.");
-                navigate("/auth");
-            }
-        }, 1000);
-    }
-
-    return () => {
-        stopSpeaking();
-        if (recognitionRef.current) recognitionRef.current.stop();
-    };
-  }, [user, topic, resumeData, navigate, stopSpeaking]);
-
-  useEffect(() => {
-    if (!currentQuestionText) return;
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
     setDisplayedText(""); 
     let index = 0;
     const words = currentQuestionText.split(" ");
@@ -202,7 +122,6 @@ const InterviewSession = () => {
         clearInterval(typingInterval);
       }
     }, 50);
-<<<<<<< HEAD
 
     if (!isRecording && !isProcessingAudio) {
         const speechTimeout = setTimeout(() => speak(currentQuestionText), 200);
@@ -224,34 +143,12 @@ const InterviewSession = () => {
     const timer = setInterval(() => {
       setTimeLeft(prev => {
         if (prev <= 1) { clearInterval(timer); handleFinish(); return 0; }
-=======
-    speak(currentQuestionText);
-    return () => clearInterval(typingInterval);
-  }, [currentQuestionText, speak]);
-
-  useEffect(() => {
-    if (isSpeaking) setInterviewState('asking');
-    else if (isRecording) setInterviewState('listening');
-    else if (loading) setInterviewState('thinking');
-    else setInterviewState('idle');
-  }, [isSpeaking, isRecording, loading]);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft(prev => {
-        if (prev <= 1) {
-          clearInterval(timer);
-          handleFinish();
-          return 0;
-        }
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
         return prev - 1;
       });
     }, 1000);
     return () => clearInterval(timer);
   }, []);
 
-<<<<<<< HEAD
 
   // ==================== UPDATED HANDLERS ====================
 
@@ -316,50 +213,10 @@ const InterviewSession = () => {
             sessionId, 
             userAnswer: transRes.data.text,
             resumeData: safeResumeData,
-=======
-  // HANDLERS
-  const startListening = () => {
-    if (!SpeechRecognition) return toast.error("Browser not supported.");
-    if (isSpeaking) stopSpeaking();
-
-    const recognition = new SpeechRecognition();
-    recognition.continuous = true;
-    recognition.interimResults = true;
-    recognition.lang = 'en-US';
-
-    recognition.onstart = () => { setIsRecording(true); setUserTranscript(""); };
-    recognition.onresult = (event: any) => {
-        let final = '';
-        for (let i = event.resultIndex; i < event.results.length; ++i) {
-            if (event.results[i].isFinal) final += event.results[i][0].transcript;
-        }
-        if(final) setUserTranscript(final);
-    };
-    recognition.start();
-    recognitionRef.current = recognition;
-  };
-
-  const stopListeningAndSubmit = async () => {
-    if (recognitionRef.current) { 
-        recognitionRef.current.stop(); 
-        setIsRecording(false); 
-    }
-    
-    if (!userTranscript.trim()) return toast.warning("Say something!");
-    
-    setInterviewState('thinking'); 
-    
-    try {
-        const res = await axios.post(`${SERVER_URL}/chat`, {
-            sessionId, 
-            userAnswer: userTranscript, 
-            resumeData,
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
             timeLeft: timeLeft, 
             totalDuration: selectedDuration * 60 
         });
 
-<<<<<<< HEAD
         // 7. Update UI
         if (chatRes.data.neural_keywords) {
             setNeuralWords(chatRes.data.neural_keywords.map((w: string) => ({ 
@@ -370,17 +227,11 @@ const InterviewSession = () => {
         if (chatRes.data.mode === 'coding') {
             setIsCoding(true);
             setStarterCode(chatRes.data.starterCode || "// Write your solution here...");
-=======
-        if (res.data.mode === 'coding') {
-            setIsCoding(true);
-            setStarterCode(res.data.starterCode || "// Write your solution here...");
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
             toast.info("Practical Challenge Initiated");
         } else {
             setIsCoding(false);
         }
 
-<<<<<<< HEAD
         setCurrentQuestionText(chatRes.data.question);
         if (chatRes.data.feedback) toast.success(chatRes.data.feedback);
 
@@ -401,26 +252,6 @@ const InterviewSession = () => {
         window.speechSynthesis.cancel();
     }
     
-=======
-        setCurrentQuestionText(res.data.question);
-        
-        if (res.data.feedback) {
-            toast.success(res.data.feedback);
-        }
-
-    } catch (err) { 
-        console.error(err);
-        setInterviewState('idle'); 
-        toast.error("Connection glitch. Retry.");
-    }
-  };
-
-  const handleToggleMic = () => { isRecording ? stopListeningAndSubmit() : startListening(); };
-
-  const handleSkip = async () => {
-    toast.info("Requesting new question...");
-    if (isSpeaking) stopSpeaking();
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
     try {
         const res = await axios.post(`${SERVER_URL}/chat`, {
             sessionId: sessionId,
@@ -429,28 +260,20 @@ const InterviewSession = () => {
             totalDuration: selectedDuration * 60
         });
         setCurrentQuestionText(res.data.question);
-<<<<<<< HEAD
         if (res.data.neural_keywords) {
             setNeuralWords(res.data.neural_keywords.map((w: string) => ({ 
                 word: w, 
                 description: "Skipping Node..." 
             })));
         }
-=======
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
     } catch (e) { toast.error("Could not skip"); }
   };
 
   const handleFinish = async (forced = false) => {
     if (isSpeaking) stopSpeaking();
-<<<<<<< HEAD
     window.speechSynthesis.cancel();
     
     setIsProcessingAudio(true);
-=======
-    if (recognitionRef.current) recognitionRef.current.stop();
-    setInterviewState('thinking');
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
     
     if(!forced) toast.info("Analyzing session data...");
     else toast.error("SESSION TERMINATED DUE TO VIOLATION");
@@ -547,7 +370,6 @@ const InterviewSession = () => {
                        <div className="flex items-center gap-2 mb-3 text-green-500">
                           <Mic className={`w-4 h-4 ${isRecording ? 'animate-pulse' : ''}`} />
                           <span className="text-xs font-bold uppercase tracking-widest">
-<<<<<<< HEAD
                              {isRecording ? "Recording..." : isProcessingAudio ? "Processing Audio..." : "Your Answer"}
                           </span>
                        </div>
@@ -557,13 +379,6 @@ const InterviewSession = () => {
                             : isProcessingAudio 
                               ? "Transcribing... (Please wait)" 
                               : userTranscript || "Tap microphone to speak..."}
-=======
-                             {isRecording ? "Listening..." : "Your Answer"}
-                          </span>
-                       </div>
-                       <div className={`text-xl font-mono leading-relaxed max-h-32 overflow-y-auto ${isRecording ? 'text-white' : 'text-gray-500 italic'}`}>
-                          {userTranscript || "Tap microphone to speak..."}
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
                        </div>
                    </div>
                </div>
@@ -586,16 +401,11 @@ const InterviewSession = () => {
                </div>
                <div className="absolute bottom-6">
                    <Badge variant="outline" className={`bg-black/50 backdrop-blur px-4 py-1 border-white/10 ${isSpeaking ? 'text-neon-cyan border-neon-cyan/30 animate-pulse' : 'text-gray-400'}`}>
-<<<<<<< HEAD
                       {isSpeaking ? 'SPEAKING' : isProcessingAudio ? 'ANALYZING AUDIO' : isRecording ? 'LISTENING' : 'IDLE'}
-=======
-                      {isSpeaking ? 'SPEAKING' : interviewState === 'thinking' ? 'PROCESSING' : isRecording ? 'LISTENING' : 'IDLE'}
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
                    </Badge>
                </div>
             </div>
 
-<<<<<<< HEAD
             <div className="flex-1 p-8 flex flex-col bg-[#050505] relative overflow-hidden">
                {/* Neural Engine Visualizer */}
                <div className="flex-1 overflow-y-auto mb-4 min-h-0 mask-gradient-b">
@@ -606,23 +416,11 @@ const InterviewSession = () => {
                   <Button 
                      onClick={handleToggleMic}
                      disabled={loading || isProcessingAudio || isSpeaking}
-=======
-            <div className="flex-1 p-8 flex flex-col bg-[#050505]">
-               <div className="flex-1"></div>
-               <div className="space-y-4">
-                  <Button 
-                     onClick={handleToggleMic}
-                     disabled={loading || interviewState === 'thinking' || isSpeaking}
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
                      className={`w-full h-16 text-lg font-bold tracking-widest rounded-xl transition-all duration-300 shadow-xl ${isRecording ? 'bg-red-600 hover:bg-red-700 text-white' : 'bg-white text-black hover:bg-neon-cyan'}`}
                   >
                      <div className="flex items-center gap-3">
                         {isRecording ? <StopCircle className="w-6 h-6 fill-current" /> : <Mic className="w-6 h-6" />}
-<<<<<<< HEAD
                         {isRecording ? "STOP & SUBMIT" : isProcessingAudio ? "PROCESSING..." : "START ANSWER"}
-=======
-                        {isRecording ? "STOP & SUBMIT" : "START ANSWER"}
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
                      </div>
                   </Button>
                   <div className="grid grid-cols-2 gap-3">
@@ -641,8 +439,4 @@ const InterviewSession = () => {
   );
 };
 
-<<<<<<< HEAD
 export default InterviewSession;
-=======
-export default InterviewSession;
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea

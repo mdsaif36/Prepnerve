@@ -90,13 +90,6 @@ const Hub = () => {
                onClick={() => navigate('/intelligence')}
                className="flex items-center gap-2 mb-3 cursor-pointer group"
              >
-<<<<<<< HEAD
-                 
-                
-             </div>
-
-             <h1 className="text-3xl md:text-4xl font-black tracking-tighter text-white leading-tight">
-=======
                  <div className="flex h-3 w-3 relative">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-neon-cyan opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-3 w-3 bg-neon-cyan"></span>
@@ -107,7 +100,6 @@ const Hub = () => {
              </div>
 
              <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-white leading-tight">
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
                {isNewUser ? (
                  <>WELCOME, <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan via-white to-purple-500 animate-gradient-x">{firstName.toUpperCase()}</span></>
                ) : (

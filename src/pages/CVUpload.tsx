@@ -2,41 +2,15 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
-<<<<<<< HEAD
-import {
-  UploadCloud,
-  FileText,
-  Clock,
-  Play,
-  Cpu
-=======
 import { 
   UploadCloud, FileText, Cpu, ShieldCheck, Play, 
-  Settings2, Target, Gauge, Fingerprint 
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
+  Settings2, Target, Gauge, Fingerprint, Clock 
 } from "lucide-react";
 import { toast } from "sonner";
 
 const CVUpload = () => {
   const navigate = useNavigate();
-<<<<<<< HEAD
 
-  const [file, setFile] = useState<File | null>(null);
-  const [duration, setDuration] = useState("30");
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files?.[0]) return;
-
-    const selectedFile = e.target.files[0];
-    if (selectedFile.type !== "application/pdf") {
-      toast.error("PDF protocol required.");
-      return;
-    }
-
-    setFile(selectedFile);
-    toast.success("Resume ingested.");
-=======
   const [file, setFile] = useState<File | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   
@@ -45,25 +19,21 @@ const CVUpload = () => {
   const [duration, setDuration] = useState("15");
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const selectedFile = e.target.files[0];
-      if (selectedFile.type !== "application/pdf") {
-          toast.error("Protocol Mismatch: Only PDF files accepted.");
-          return;
-      }
-      setFile(selectedFile);
-      toast.success("Resume calibrated for simulation.");
+    if (!e.target.files?.[0]) return;
+
+    const selectedFile = e.target.files[0];
+    if (selectedFile.type !== "application/pdf") {
+      toast.error("Protocol Mismatch: Only PDF files accepted.");
+      return;
     }
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
+
+    setFile(selectedFile);
+    toast.success("Resume calibrated for simulation.");
   };
 
   const startSimulation = async () => {
     if (!file) {
-<<<<<<< HEAD
-      toast.error("No resume detected.");
-=======
       toast.error("Please upload a resume to initialize the neural engine.");
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
       return;
     }
 
@@ -71,8 +41,9 @@ const CVUpload = () => {
 
     try {
       const formData = new FormData();
-<<<<<<< HEAD
       formData.append("file", file);
+
+      console.log("🚀 Sending Resume via Secure Fetch to Python Backend...");
 
       const response = await fetch("http://localhost:8000/upload-resume", {
         method: "POST",
@@ -80,7 +51,10 @@ const CVUpload = () => {
       });
 
       const data = await response.json();
-      if (!response.ok) throw new Error(data.detail);
+
+      if (!response.ok) {
+        throw new Error(data.detail || "Server rejected the uplink.");
+      }
 
       const resumeData = {
         fileName: data.filename,
@@ -89,172 +63,35 @@ const CVUpload = () => {
       };
 
       localStorage.setItem("resumeData", JSON.stringify(resumeData));
+      console.log("Neural Link Established:", resumeData);
+      toast.success("Neural Link Established.");
 
-      navigate("/interview-session", {
-        state: {
-          resumeData,
-          topic: "Auto-detected",
-          duration,
-          difficulty: "Auto-calibrated",
-        },
-      });
-    } catch (err: any) {
-      toast.error(err.message || "Uplink failure.");
-=======
-      formData.append("resume", file);
-
-      console.log("🚀 Sending Resume via Secure Fetch...");
-
-      // 👇 FIXED: Points to Render Backend
-      const response = await fetch("https://prepnerveserver.onrender.com/api/resume/upload", {
-          method: "POST",
-          body: formData,
-          // ⚠️ IMPORTANT: Do NOT set Content-Type header. Fetch does it automatically.
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-          throw new Error(data.error || "Server rejected the uplink.");
-      }
-
-      if (data.success) {
-          const resumeData = data.data;
-
-          localStorage.setItem("resumeData", JSON.stringify(resumeData));
-          console.log("Neural Link Established:", resumeData);
-          toast.success("Neural Link Established.");
-
-          setTimeout(() => {
-            navigate("/interview-session", { 
-              state: { 
-                resumeData: resumeData,
-                topic: focus,
-                duration: duration,
-                difficulty: difficulty
-              } 
-            });
-          }, 2000); 
-      }
+      setTimeout(() => {
+        navigate("/interview-session", { 
+          state: { 
+            resumeData: resumeData,
+            topic: focus,
+            duration: duration,
+            difficulty: difficulty
+          } 
+        });
+      }, 2000); 
 
     } catch (error: any) {
       console.error("Upload Error:", error);
       toast.error(error.message || "Neural Uplink Failed. Check Backend Connection.");
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
       setIsAnalyzing(false);
     }
   };
 
   return (
-<<<<<<< HEAD
-    <div className="min-h-screen bg-[#05070c] text-slate-200 font-mono">
-      <Navbar />
-
-      {/* Cyber Grid */}
-      <div className="fixed inset-0 bg-[linear-gradient(to_right,#0f172a_1px,transparent_1px),linear-gradient(to_bottom,#0f172a_1px,transparent_1px)] bg-[size:3rem_3rem] pointer-events-none opacity-40" />
-
-      {/* Loader */}
-      {isAnalyzing && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="space-y-3 text-center">
-            <div className="w-12 h-12 border-2 border-cyan-400/30 border-t-cyan-400 rounded-full animate-spin mx-auto" />
-            <p className="text-xs tracking-widest text-cyan-400">
-              INTERVIEW SESSION
-            </p>
-          </div>
-        </div>
-      )}
-
-      <div className="relative z-10 max-w-6xl mx-auto px-6 pt-28 pb-16 space-y-10">
-
-        {/* Header */}
-        <div className="border-b border-slate-800 pb-6">
-          <h1 className="text-3xl font-semibold tracking-tight">
-           Candidate Resume
-          </h1>
-          
-        </div>
-
-        {/* Main Panels */}
-        <div className="grid md:grid-cols-2 gap-8">
-
-          {/* Resume Panel */}
-          <div className="bg-[#0a0f1c] border border-slate-800 rounded-lg p-8">
-            <h2 className="text-sm tracking-widest text-cyan-400 mb-6 flex items-center gap-2">
-              <FileText className="w-4 h-4" />
-              CONTEXT INGESTION
-            </h2>
-
-            <label className="block h-56 border border-dashed border-slate-700 rounded-md flex flex-col items-center justify-center cursor-pointer hover:border-cyan-400 transition">
-              <input type="file" accept=".pdf" hidden onChange={handleFileUpload} />
-
-              {file ? (
-                <>
-                  <FileText className="w-8 h-8 text-cyan-400 mb-2" />
-                  <p className="text-sm">{file.name}</p>
-                  <p className="text-xs text-slate-500 mt-1">
-                    Resume vectorized
-                  </p>
-                </>
-              ) : (
-                <>
-                  <UploadCloud className="w-8 h-8 text-slate-500 mb-2" />
-                  <p className="text-sm text-slate-400">
-                    Upload resume (PDF)
-                  </p>
-                  <p className="text-xs text-slate-600 mt-1">
-                    Drag or click
-                  </p>
-                </>
-              )}
-            </label>
-          </div>
-
-          {/* Duration Panel */}
-          <div className="bg-[#0a0f1c] border border-slate-800 rounded-lg p-8">
-            <h2 className="text-sm tracking-widest text-cyan-400 mb-6 flex items-center gap-2">
-              <Clock className="w-4 h-4" />
-              RUNTIME PARAMETERS
-            </h2>
-
-            <div className="space-y-3">
-              {["15", "30", "45"].map((time) => (
-                <button
-                  key={time}
-                  onClick={() => setDuration(time)}
-                  className={`w-full px-4 py-4 rounded-md border text-left transition ${
-                    duration === time
-                      ? "border-cyan-400 bg-cyan-400/5"
-                      : "border-slate-700 hover:border-slate-600"
-                  }`}
-                >
-                  <span className="text-sm tracking-wide">
-                    {time} MINUTES
-                  </span>
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Action */}
-        <div className="flex justify-end">
-          <Button
-            onClick={startSimulation}
-            disabled={isAnalyzing}
-            className="h-12 px-10 bg-cyan-400/90 hover:bg-cyan-400 text-black rounded-md tracking-widest text-sm"
-          >
-            <Play className="w-4 h-4 mr-2" />
-            Start Session
-          </Button>
-=======
     <div className="min-h-screen bg-[#02040a] text-white font-sans selection:bg-neon-cyan/30">
       <Navbar />
       
       <div className="fixed inset-0 bg-[linear-gradient(to_right,#1f29372e_1px,transparent_1px),linear-gradient(to_bottom,#1f29372e_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none" />
       
       {isAnalyzing && (
-        <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl flex flex-col items-center justify-center">
+        <div className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-xl flex flex-col items-center justify-center">
            <div className="w-24 h-24 rounded-full border-4 border-neon-cyan/30 border-t-neon-cyan animate-spin mb-8" />
            <h2 className="text-3xl font-black text-white tracking-widest animate-pulse">SYSTEM CHECK INITIATED</h2>
            <div className="mt-4 space-y-2 text-center font-mono text-xs text-neon-cyan">
@@ -323,8 +160,8 @@ const CVUpload = () => {
                                onClick={() => setDifficulty(level.toLowerCase())}
                                className={`flex-1 py-2 rounded-lg text-xs font-bold border transition-all ${
                                   difficulty === level.toLowerCase() 
-                                    ? 'bg-neon-cyan text-black border-neon-cyan shadow-[0_0_15px_rgba(6,182,212,0.4)]' 
-                                    : 'bg-white/5 border-white/10 text-gray-400 hover:bg-white/10'
+                                     ? 'bg-neon-cyan text-black border-neon-cyan shadow-[0_0_15px_rgba(6,182,212,0.4)]' 
+                                     : 'bg-white/5 border-white/10 text-gray-400 hover:bg-white/10'
                                }`}
                             >
                                {level}
@@ -344,8 +181,8 @@ const CVUpload = () => {
                                onClick={() => setDuration(time.replace('m', ''))}
                                className={`flex-1 py-2 rounded-lg text-xs font-bold border transition-all ${
                                   duration === time.replace('m', '') 
-                                    ? 'bg-purple-500 text-white border-purple-500 shadow-[0_0_15px_rgba(168,85,247,0.4)]' 
-                                    : 'bg-white/5 border-white/10 text-gray-400 hover:bg-white/10'
+                                     ? 'bg-purple-500 text-white border-purple-500 shadow-[0_0_15px_rgba(168,85,247,0.4)]' 
+                                     : 'bg-white/5 border-white/10 text-gray-400 hover:bg-white/10'
                                }`}
                             >
                                {time}
@@ -372,8 +209,8 @@ const CVUpload = () => {
                             onClick={() => setFocus(item.id)}
                             className={`py-3 px-2 rounded-xl text-xs font-bold border transition-all ${
                                focus === item.id 
-                                 ? 'bg-white text-black border-white' 
-                                 : 'bg-white/5 border-white/10 text-gray-400 hover:border-white/30'
+                                  ? 'bg-white text-black border-white' 
+                                  : 'bg-white/5 border-white/10 text-gray-400 hover:border-white/30'
                             }`}
                          >
                             {item.label}
@@ -397,7 +234,6 @@ const CVUpload = () => {
              </div>
 
           </div>
->>>>>>> 47f97d208d1ea2a89bf957da25f66293c38ac1ea
         </div>
       </div>
     </div>
