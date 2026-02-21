@@ -10,6 +10,8 @@ import { Loader2, ArrowLeft, Lock, Mail, Github } from "lucide-react";
 import Interviewer3D from "@/components/Interviewer3D";
 import Navbar from "@/components/Navbar";
 import { useAuth } from "@/hooks/useAuth"; 
+// Import the new background component
+import ContourBackground from "@/components/ContourBackground";
 
 // Custom Google Icon
 const GoogleIcon = () => (
@@ -146,14 +148,18 @@ const Auth = () => {
   );
 
   return (
-    <div className="min-h-screen bg-[#02040a] text-white font-sans selection:bg-neon-cyan/30 flex flex-col">
+    <div className="min-h-screen bg-[#02040a] text-white font-sans selection:bg-neon-cyan/30 flex flex-col relative overflow-hidden">
       <Navbar />
 
-      <div className="flex-1 grid lg:grid-cols-2">
-        <div className="hidden lg:flex relative items-center justify-center bg-black overflow-hidden border-r border-white/10">
-           <div className="absolute inset-0 bg-[linear-gradient(to_right,#1f29372e_1px,transparent_1px),linear-gradient(to_bottom,#1f29372e_1px,transparent_1px)] bg-[size:3rem_3rem] opacity-50 pointer-events-none" />
-           <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent via-transparent to-neon-cyan/5" />
-           <div className="relative z-10 w-full max-w-lg text-center space-y-8">
+      {/* --- FIXED BACKGROUND LAYER --- */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+          <ContourBackground />
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent via-transparent to-neon-cyan/5" />
+      </div>
+
+      <div className="flex-1 grid lg:grid-cols-2 relative z-10">
+        <div className="hidden lg:flex relative items-center justify-center overflow-hidden border-r border-white/10 bg-black/20 backdrop-blur-sm">
+           <div className="relative w-full max-w-lg text-center space-y-8">
               <div className="relative w-64 h-64 mx-auto mb-8">
                  <div className="absolute inset-0 bg-neon-cyan/20 blur-[80px] rounded-full animate-pulse" />
                  <Interviewer3D key="auth-3d" className="w-full h-full" interviewState="idle" />
@@ -169,8 +175,8 @@ const Auth = () => {
            </div>
         </div>
 
-        <div className="flex items-center justify-center p-6 sm:p-12 relative">
-          <Card className="w-full max-w-md bg-black/40 backdrop-blur-xl border border-white/10 p-8 shadow-2xl relative z-10">
+        <div className="flex items-center justify-center p-6 sm:p-12 relative bg-black/10 backdrop-blur-sm">
+          <Card className="w-full max-w-md bg-black/60 backdrop-blur-xl border border-white/10 p-8 shadow-[0_0_50px_rgba(6,182,212,0.1)] relative z-10">
             <div className="mb-8">
               <Button variant="ghost" onClick={() => navigate("/")} className="pl-0 hover:text-white text-gray-400 mb-4 -ml-2">
                 <ArrowLeft className="w-4 h-4 mr-2" /> Back to Home
