@@ -4,7 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom"; 
 import { AnimatePresence } from "framer-motion";
-import { AuthProvider } from "@/hooks/useAuth"; // ✅ 1. IMPORT THIS
+import { AuthProvider } from "@/hooks/useAuth";
 
 // --- PAGES ---
 import Index from "./pages/Index";
@@ -16,6 +16,7 @@ import Profile from "./pages/Profile";
 import About from "./pages/About";
 import Analytics from "./pages/Analytics";
 import NotFound from "./pages/NotFound";
+import QuestionBank from "./pages/QuestionBank"; // ✅ IMPORT NEW PAGE
 
 // --- FEATURES ---
 import CVUpload from "./pages/CVUpload";
@@ -25,7 +26,7 @@ import InterviewSession from "./pages/InterviewSession";
 import BattleLobby from "./pages/BattleLobby";
 import BattleArena from "./pages/BattleArena";
 
-import { SpeedInsights } from "@vercel/speed-insights/react"; // ✅ Ensure this is here
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 const queryClient = new QueryClient();
 
@@ -45,6 +46,7 @@ const AnimatedRoutes = () => {
         <Route path="/profile" element={<Profile />} />
         <Route path="/sessions" element={<Sessions />} />
         <Route path="/analytics" element={<Analytics />} />
+        <Route path="/intelligence" element={<QuestionBank />} /> {/* ✅ ADD THIS ROUTE */}
 
         <Route path="/cv-upload" element={<CVUpload />} />
         <Route path="/cv-score" element={<CVScore />} />
@@ -62,7 +64,6 @@ const AnimatedRoutes = () => {
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    {/* 👇 2. WRAP EVERYTHING WITH AUTHPROVIDER */}
     <AuthProvider>
       <TooltipProvider>
         <Toaster />

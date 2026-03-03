@@ -4,11 +4,10 @@ import Navbar from "@/components/Navbar";
 import api from "@/lib/api"; 
 import { 
   Play, Trophy, ArrowUpRight, Zap, Crown, TrendingUp, 
-  Swords, Users, Radio, ArrowRight, Clock, ShieldAlert
+  Swords, Users, Database, Cpu
 } from "lucide-react";
 import PageTransition from "@/components/PageTransition";
 import { useAuth } from "@/hooks/useAuth";
-import { motion, AnimatePresence } from "framer-motion";
 
 // --- TYPES ---
 interface NewsItem {
@@ -95,15 +94,15 @@ const Hub = () => {
                     <span className="relative inline-flex rounded-full h-3 w-3 bg-neon-cyan"></span>
                  </div>
                  <span className="text-xs font-mono text-neon-cyan tracking-[0.2em] uppercase group-hover:underline transition-all">
-                    {isNewUser ? "INITIATING ONBOARDING SEQUENCE" : "SYSTEM OPERATIONAL // VIEW LATEST FEED"}
+                    {isNewUser ? "INITIATING ONBOARDING SEQUENCE" : "SYSTEM OPERATIONAL // VIEW INTELLIGENCE BANK"}
                  </span>
              </div>
 
-             <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-white leading-tight">
+             <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-white leading-tight uppercase">
                {isNewUser ? (
-                 <>WELCOME, <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan via-white to-purple-500 animate-gradient-x">{firstName.toUpperCase()}</span></>
+                 <>WELCOME, <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan via-white to-purple-500 animate-gradient-x">{firstName}</span></>
                ) : (
-                 <>WELCOME BACK, <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">{firstName.toUpperCase()}</span></>
+                 <>WELCOME BACK, <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">{firstName}</span></>
                )}
              </h1>
           </div>
@@ -128,7 +127,7 @@ const Hub = () => {
                      <h2 className="text-4xl font-black text-white mb-2 group-hover:text-blue-400 transition-colors uppercase">Neural Simulation</h2>
                      <p className="text-gray-400 max-w-sm text-sm leading-relaxed">Practice with our hyper-realistic 3D interviewer.</p>
                   </div>
-                  <div className="mt-8 flex items-center gap-2 text-sm font-bold text-white group-hover:translate-x-2 transition-transform">INITIALIZE <ArrowUpRight className="w-4 h-4" /></div>
+                  <div className="mt-8 flex items-center gap-2 text-sm font-bold text-white group-hover:translate-x-2 transition-transform uppercase">Initialize <ArrowUpRight className="w-4 h-4" /></div>
                </div>
             </div>
 
@@ -150,19 +149,32 @@ const Hub = () => {
                      <h2 className="text-4xl font-black text-white mb-2 group-hover:text-red-500 transition-colors uppercase">Battle Arena</h2>
                      <p className="text-gray-400 max-w-sm text-sm leading-relaxed ml-auto">Real-time 1v1 coding duels.</p>
                   </div>
-                  <div className="mt-8 flex items-center gap-2 text-sm font-bold text-white group-hover:-translate-x-2 transition-transform">ENTER LOBBY <ArrowUpRight className="w-4 h-4" /></div>
+                  <div className="mt-8 flex items-center gap-2 text-sm font-bold text-white group-hover:-translate-x-2 transition-transform uppercase">Enter Lobby <ArrowUpRight className="w-4 h-4" /></div>
                </div>
             </div>
 
-            {/* 3. ANALYTICS */}
-            <div onClick={() => navigate("/dashboard")} className="md:col-span-4 relative group cursor-pointer overflow-hidden rounded-[2rem] border border-white/10 bg-[#080808] transition-all duration-500 hover:border-purple-500/50 hover:shadow-[0_0_50px_rgba(168,85,247,0.15)] p-8 flex flex-col h-full">
-               <div className="absolute inset-0 bg-gradient-to-b from-purple-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            {/* 3. INTELLIGENCE BANK (NEW SECTION) */}
+            <div onClick={() => navigate("/intelligence")} className="md:col-span-4 relative group cursor-pointer overflow-hidden rounded-[2rem] border border-white/10 bg-[#080808] transition-all duration-500 hover:border-neon-cyan/50 hover:shadow-[0_0_50px_rgba(34,211,238,0.1)] p-8 flex flex-col h-full">
+               <div className="absolute inset-0 bg-gradient-to-b from-neon-cyan/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                <div className="relative z-10 h-full flex flex-col justify-between">
                   <div className="flex justify-between items-start">
-                     <div className="p-3 bg-white/5 backdrop-blur-md rounded-xl border border-white/10 text-purple-500 group-hover:bg-purple-500 group-hover:text-white transition-colors duration-300"><Trophy className="w-6 h-6" /></div>
+                     <div className="p-3 bg-white/5 backdrop-blur-md rounded-xl border border-white/10 text-neon-cyan group-hover:bg-neon-cyan group-hover:text-black transition-colors duration-300">
+                        <Database className="w-6 h-6" />
+                     </div>
+                     <ArrowUpRight className="w-5 h-5 text-gray-600 group-hover:text-neon-cyan transition-colors" />
                   </div>
-                  <div><h2 className="text-xl font-bold text-white mb-1">Deep Analytics</h2><p className="text-gray-400 text-xs">View selection probability.</p></div>
-                  <div className="flex items-end gap-1 h-12 w-full opacity-50 group-hover:opacity-100 transition-opacity mt-4">{[40, 70, 45, 90, 60, 80].map((h, i) => (<div key={i} className="flex-1 bg-white/10 hover:bg-purple-500 transition-colors duration-300 rounded-t-sm" style={{ height: `${h}%` }} />))}</div>
+                  <div>
+                    <h2 className="text-xl font-bold text-white mb-1 uppercase tracking-tight">Question Bank</h2>
+                    <p className="text-gray-400 text-xs">Access global question dataset.</p>
+                  </div>
+                  <div className="mt-4 flex -space-x-2 overflow-hidden opacity-50 group-hover:opacity-100 transition-opacity">
+                    {[1,2,3,4].map((i) => (
+                      <div key={i} className="inline-block h-8 w-8 rounded-full ring-2 ring-black bg-gray-800 flex items-center justify-center">
+                        <Cpu className="w-4 h-4 text-neon-cyan/70" />
+                      </div>
+                    ))}
+                    <div className="flex items-center justify-center h-8 w-8 rounded-full ring-2 ring-black bg-gray-900 text-[10px] font-bold text-neon-cyan">+99</div>
+                  </div>
                </div>
             </div>
 
@@ -174,7 +186,7 @@ const Hub = () => {
                      <div className="p-3 bg-white/5 backdrop-blur-md rounded-xl border border-white/10 text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-colors duration-300"><Zap className="w-6 h-6" /></div>
                      <ArrowUpRight className="w-5 h-5 text-gray-600 group-hover:text-white transition-colors" />
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-1">CV Intelligence</h3>
+                  <h3 className="text-xl font-bold text-white mb-1 uppercase tracking-tight">CV Intelligence</h3>
                   <p className="text-gray-500 text-xs group-hover:text-gray-400 transition-colors">ATS Parsing & Optimization.</p>
                </div>
             </div>
@@ -185,9 +197,9 @@ const Hub = () => {
                <div className="relative z-10">
                   <div className="flex justify-between items-start mb-6">
                      <div className="p-3 bg-white/5 backdrop-blur-md rounded-xl border border-white/10 text-yellow-500 group-hover:bg-yellow-500 group-hover:text-white transition-colors duration-300"><Crown className="w-6 h-6" /></div>
-                     <div className="flex items-center gap-1.5 px-3 py-1 bg-yellow-500/10 border border-yellow-500/20 rounded-full text-yellow-500 text-[10px] font-bold font-mono"><TrendingUp className="w-3 h-3" /> #{userRank.position}</div>
+                     <div className="flex items-center gap-1.5 px-3 py-1 bg-yellow-500/10 border border-yellow-500/20 rounded-full text-yellow-500 text-[10px] font-bold font-mono tracking-tighter"><TrendingUp className="w-3 h-3" /> #{userRank.position}</div>
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-1">Leaderboards</h3>
+                  <h3 className="text-xl font-bold text-white mb-1 uppercase tracking-tight">Leaderboards</h3>
                   <p className="text-gray-500 text-xs mb-3">Top <span className="text-white font-bold">{userRank.percentile}</span>.</p>
                   <div className="h-1.5 w-full bg-gray-800 rounded-full overflow-hidden flex items-center"><div className="h-full bg-yellow-500 w-[85%] shadow-[0_0_10px_orange]" /></div>
                </div>

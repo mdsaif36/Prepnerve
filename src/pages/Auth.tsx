@@ -3,15 +3,11 @@ import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
-import { Loader2, ArrowLeft, Lock, Mail, Github } from "lucide-react";
-import Interviewer3D from "@/components/Interviewer3D";
-import Navbar from "@/components/Navbar";
+import { Loader2, ArrowLeft, Lock, Mail, Github, User } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth"; 
-// Import the new background component
-import ContourBackground from "@/components/ContourBackground";
+import { motion } from "framer-motion";
 
 // Custom Google Icon
 const GoogleIcon = () => (
@@ -62,7 +58,6 @@ const Auth = () => {
                toast.success("Welcome back!");
             }
             
-            // Navigate with state to preserve "Welcome" logic
             navigate("/hub", { state: { isNewUser }, replace: true });
         } catch (e) {
             console.error("Social Auth Parse Error:", e);
@@ -80,7 +75,6 @@ const Auth = () => {
   useEffect(() => {
     if (user && !authLoading) {
       const from = location.state?.from?.pathname || "/hub";
-      // Pass isNewUser flag based on which tab was active during auth
       const isNewUser = activeTab === "signup";
       navigate(from, { replace: true, state: { isNewUser } });
     }
@@ -112,12 +106,6 @@ const Auth = () => {
       
       if (result.error) throw result.error;
 
-      if (type === "signup") {
-         toast.success(`Welcome, ${fullName}!`);
-      } else {
-         toast.success("Welcome back!");
-      }
-
     } catch (error: any) {
       console.error("Auth Error:", error);
       toast.error(error.message || "Authentication failed");
@@ -125,133 +113,191 @@ const Auth = () => {
     }
   };
 
-  const SocialButtons = () => (
-    <>
-      <div className="relative my-6">
-        <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t border-white/10" />
-        </div>
-        <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-[#0f172a] px-2 text-gray-500">Or continue with</span>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-4">
-        <Button variant="outline" className="border-white/10 hover:bg-white/5 hover:text-white text-gray-300" onClick={() => handleSocialLogin("google")}>
-          <GoogleIcon />
-        </Button>
-        <Button variant="outline" className="border-white/10 hover:bg-white/5 hover:text-white text-gray-300" onClick={() => handleSocialLogin("github")}>
-          <Github className="h-5 w-5" />
-        </Button>
-      </div>
-    </>
-  );
-
   return (
-    <div className="min-h-screen bg-[#02040a] text-white font-sans selection:bg-neon-cyan/30 flex flex-col relative overflow-hidden">
-      <Navbar />
+    <div className="min-h-screen bg-[#02040a] text-white font-sans selection:bg-cyan-500/30 flex flex-col relative overflow-hidden">
 
-      {/* --- FIXED BACKGROUND LAYER --- */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-          <ContourBackground />
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent via-transparent to-neon-cyan/5" />
+      {/* --- DEEP BACKGROUND ORBS --- */}
+      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+          <div className="absolute -top-[10%] -left-[10%] w-[80vw] h-[80vw] rounded-full bg-cyan-900/30 blur-[150px]" />
+          <div className="absolute -bottom-[10%] -right-[10%] w-[80vw] h-[80vw] rounded-full bg-blue-900/30 blur-[150px]" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vw] bg-cyan-500/10 rounded-full blur-[150px]" />
       </div>
 
-      <div className="flex-1 grid lg:grid-cols-2 relative z-10">
-        <div className="hidden lg:flex relative items-center justify-center overflow-hidden border-r border-white/10 bg-black/20 backdrop-blur-sm">
-           <div className="relative w-full max-w-lg text-center space-y-8">
-              <div className="relative w-64 h-64 mx-auto mb-8">
-                 <div className="absolute inset-0 bg-neon-cyan/20 blur-[80px] rounded-full animate-pulse" />
-                 <Interviewer3D key="auth-3d" className="w-full h-full" interviewState="idle" />
-              </div>
-              <div className="space-y-4 px-8">
-                <h2 className="text-4xl font-black tracking-tighter text-white">
-                  ACCESS THE <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan to-blue-500">SIMULATION</span>
-                </h2>
-                <p className="text-gray-400 text-lg leading-relaxed">
-                  Join elite candidates mastering their technical interviews.
-                </p>
-              </div>
-           </div>
-        </div>
+      {/* --- FULL SCREEN GLASS OVERLAY --- */}
+      <div className="fixed inset-0 z-0 bg-white/[0.01] backdrop-blur-2xl pointer-events-none" />
 
-        <div className="flex items-center justify-center p-6 sm:p-12 relative bg-black/10 backdrop-blur-sm">
-          <Card className="w-full max-w-md bg-black/60 backdrop-blur-xl border border-white/10 p-8 shadow-[0_0_50px_rgba(6,182,212,0.1)] relative z-10">
-            <div className="mb-8">
-              <Button variant="ghost" onClick={() => navigate("/")} className="pl-0 hover:text-white text-gray-400 mb-4 -ml-2">
-                <ArrowLeft className="w-4 h-4 mr-2" /> Back to Home
+      {/* --- MAIN CENTERED CONTENT --- */}
+      <main className="flex-1 flex items-center justify-center p-4 sm:p-8 relative z-10 min-h-screen w-full">
+        
+        <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="w-full max-w-[420px] relative"
+        >
+            {/* Top Navigation & Header */}
+            <div className="flex flex-col items-center mb-10 relative">
+              <Button 
+                variant="ghost" 
+                onClick={() => navigate("/")} 
+                className="absolute -left-6 -top-2 pl-0 hover:text-white hover:bg-transparent text-gray-500 group"
+              >
+                <ArrowLeft className="w-5 h-5 mr-1 transition-transform group-hover:-translate-x-1" />
               </Button>
-              <h1 className="text-3xl font-bold text-white mb-2">Welcome</h1>
-              <p className="text-gray-400">Enter your credentials to access the system.</p>
+              
+              <h1 className="text-4xl font-black tracking-tight text-white mb-3 text-center mt-2">
+                {activeTab === "login" ? "Welcome Back" : "Initialize"}
+              </h1>
+              <p className="text-gray-400 text-sm text-center max-w-[280px]">
+                {activeTab === "login" 
+                  ? "Access the system to continue your technical preparation." 
+                  : "Register below to gain access to the Neural Engine."}
+              </p>
             </div>
 
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="grid w-full grid-cols-2 bg-white/5 mb-8 border border-white/5">
-                <TabsTrigger value="login" className="data-[state=active]:bg-neon-cyan data-[state=active]:text-black font-bold">Sign In</TabsTrigger>
-                <TabsTrigger value="signup" className="data-[state=active]:bg-neon-cyan data-[state=active]:text-black font-bold">Register</TabsTrigger>
+              <TabsList className="grid w-full grid-cols-2 bg-white/5 mb-8 border border-white/5 rounded-2xl p-1.5 shadow-inner">
+                <TabsTrigger 
+                  value="login" 
+                  className="rounded-xl py-2.5 data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-500 data-[state=active]:to-blue-600 data-[state=active]:text-white text-gray-400 transition-all font-bold text-sm"
+                >
+                  Sign In
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="signup" 
+                  className="rounded-xl py-2.5 data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-500 data-[state=active]:to-blue-600 data-[state=active]:text-white text-gray-400 transition-all font-bold text-sm"
+                >
+                  Register
+                </TabsTrigger>
               </TabsList>
 
-              <TabsContent value="login" className="space-y-6">
-                <div className="space-y-4">
+              {/* LOGIN TAB */}
+              <TabsContent value="login" className="space-y-6 mt-0">
+                <div className="space-y-5">
                   <div className="space-y-2">
-                    <Label>Email Address</Label>
+                    <Label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">Email</Label>
                     <div className="relative group">
-                      <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-500 group-focus-within:text-neon-cyan transition-colors" />
+                      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500 group-focus-within:text-cyan-400 transition-colors" />
                       <Input 
                         type="email" 
                         placeholder="name@example.com" 
-                        className="pl-10 bg-white/5 border-white/10 focus:border-neon-cyan/50 text-white h-10" 
+                        className="pl-12 bg-black/20 border-white/10 focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/50 text-white h-14 rounded-2xl transition-all" 
                         value={email} 
                         onChange={(e) => setEmail(e.target.value)}
-                        autoComplete="email" 
                       />
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label>Password</Label>
+                    <div className="flex items-center justify-between ml-1">
+                      <Label className="text-xs font-bold text-gray-400 uppercase tracking-wider">Password</Label>
+                      <button className="text-xs font-medium text-cyan-400 hover:text-cyan-300 transition-colors">Forgot?</button>
+                    </div>
                     <div className="relative group">
-                      <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-500 group-focus-within:text-neon-cyan transition-colors" />
+                      <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500 group-focus-within:text-cyan-400 transition-colors" />
                       <Input 
                         type="password" 
                         placeholder="••••••••" 
-                        className="pl-10 bg-white/5 border-white/10 focus:border-neon-cyan/50 text-white h-10" 
+                        className="pl-12 bg-black/20 border-white/10 focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/50 text-white h-14 rounded-2xl transition-all" 
                         value={password} 
                         onChange={(e) => setPassword(e.target.value)} 
-                        autoComplete="current-password"
                       />
                     </div>
                   </div>
                 </div>
-                <Button className="w-full bg-neon-cyan text-black font-bold hover:bg-white transition-all h-12" onClick={() => handleAuth("login")} disabled={loading}>
-                  {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Access System"}
+                <Button 
+                  className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold hover:scale-[1.02] shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)] transition-all h-14 rounded-2xl text-md border border-white/10" 
+                  onClick={() => handleAuth("login")} 
+                  disabled={loading}
+                >
+                  {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Access System"}
                 </Button>
-                <SocialButtons />
               </TabsContent>
 
-              <TabsContent value="signup" className="space-y-6">
-                 <div className="space-y-4">
+              {/* SIGNUP TAB */}
+              <TabsContent value="signup" className="space-y-6 mt-0">
+                 <div className="space-y-5">
                   <div className="space-y-2">
-                    <Label>Full Name</Label>
-                    <Input placeholder="John Doe" className="bg-white/5 border-white/10 focus:border-neon-cyan/50 text-white h-10" value={fullName} onChange={(e) => setFullName(e.target.value)} autoComplete="name" />
+                    <Label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">Full Name</Label>
+                    <div className="relative group">
+                      <User className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500 group-focus-within:text-cyan-400 transition-colors" />
+                      <Input 
+                        placeholder="John Doe" 
+                        className="pl-12 bg-black/20 border-white/10 focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/50 text-white h-14 rounded-2xl transition-all" 
+                        value={fullName} 
+                        onChange={(e) => setFullName(e.target.value)} 
+                      />
+                    </div>
                   </div>
                   <div className="space-y-2">
-                    <Label>Email Address</Label>
-                    <Input type="email" placeholder="name@example.com" className="bg-white/5 border-white/10 focus:border-neon-cyan/50 text-white h-10" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" />
+                    <Label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">Email</Label>
+                    <div className="relative group">
+                      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500 group-focus-within:text-cyan-400 transition-colors" />
+                      <Input 
+                        type="email" 
+                        placeholder="name@example.com" 
+                        className="pl-12 bg-black/20 border-white/10 focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/50 text-white h-14 rounded-2xl transition-all" 
+                        value={email} 
+                        onChange={(e) => setEmail(e.target.value)} 
+                      />
+                    </div>
                   </div>
                   <div className="space-y-2">
-                    <Label>Create Password</Label>
-                    <Input type="password" placeholder="••••••••" className="bg-white/5 border-white/10 focus:border-neon-cyan/50 text-white h-10" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="new-password" />
+                    <Label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">Create Password</Label>
+                    <div className="relative group">
+                      <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500 group-focus-within:text-cyan-400 transition-colors" />
+                      <Input 
+                        type="password" 
+                        placeholder="••••••••" 
+                        className="pl-12 bg-black/20 border-white/10 focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/50 text-white h-14 rounded-2xl transition-all" 
+                        value={password} 
+                        onChange={(e) => setPassword(e.target.value)} 
+                      />
+                    </div>
                   </div>
                 </div>
-                <Button className="w-full bg-white text-black font-bold hover:bg-neon-cyan transition-all h-12" onClick={() => handleAuth("signup")} disabled={loading}>
-                  {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Create Account"}
+                <Button 
+                  className="w-full bg-white text-black font-bold hover:scale-[1.02] shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(255,255,255,0.2)] transition-all h-14 rounded-2xl text-md" 
+                  onClick={() => handleAuth("signup")} 
+                  disabled={loading}
+                >
+                  {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Create Account"}
                 </Button>
-                <SocialButtons />
               </TabsContent>
             </Tabs>
-          </Card>
-        </div>
-      </div>
+
+            {/* Social Authentication Section */}
+            <div className="mt-10">
+              <div className="relative mb-6">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t border-white/10" />
+                </div>
+                <div className="relative flex justify-center text-[10px] font-bold uppercase tracking-widest">
+                  <span className="bg-[#02040a] px-4 text-gray-500 rounded-full border border-white/5 py-1">Or continue with</span>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <Button 
+                  variant="outline" 
+                  className="h-14 rounded-2xl bg-white/5 border-white/10 hover:bg-white/10 hover:border-cyan-500/30 transition-all text-gray-300 group" 
+                  onClick={() => handleSocialLogin("google")}
+                >
+                  <GoogleIcon />
+                  <span className="ml-2 font-medium group-hover:text-white transition-colors">Google</span>
+                </Button>
+                <Button 
+                  variant="outline" 
+                  className="h-14 rounded-2xl bg-white/5 border-white/10 hover:bg-white/10 hover:border-cyan-500/30 transition-all text-gray-300 group" 
+                  onClick={() => handleSocialLogin("github")}
+                >
+                  <Github className="h-5 w-5 group-hover:text-white transition-colors" />
+                  <span className="ml-2 font-medium group-hover:text-white transition-colors">GitHub</span>
+                </Button>
+              </div>
+            </div>
+
+        </motion.div>
+      </main>
     </div>
   );
 };

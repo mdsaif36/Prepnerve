@@ -12,10 +12,8 @@ import api from "@/lib/api";
 import { getSocket } from "@/lib/socket";
 import PageTransition from "@/components/PageTransition"; 
 import { motion, AnimatePresence } from "framer-motion";
-// Import the new background component
-import ContourBackground from "@/components/ContourBackground";
 
-// --- HELPER COMPONENTS ---
+import ContourBackground from "@/components/ContourBackground";
 
 const TrendIndicator = ({ value, size = 'md' }: { value: number, size?: 'sm' | 'md' }) => {
   const isPositive = value >= 0;
