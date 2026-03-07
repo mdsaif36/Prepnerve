@@ -27,6 +27,7 @@ import BattleLobby from "./pages/BattleLobby";
 import BattleArena from "./pages/BattleArena";
 
 import { SpeedInsights } from "@vercel/speed-insights/react";
+import { Analytics } from "@vercel/analytics/react";
 
 const queryClient = new QueryClient();
 
@@ -74,6 +75,7 @@ const App = () => (
         </BrowserRouter>
         
         <SpeedInsights />
+        <Analytics />
       </TooltipProvider>
     </AuthProvider>
   </QueryClientProvider>
