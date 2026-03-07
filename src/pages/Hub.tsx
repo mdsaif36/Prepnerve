@@ -82,23 +82,15 @@ const Hub = () => {
         <div className="fixed bottom-[-20%] left-[-10%] w-[600px] h-[600px] bg-neon-cyan/5 blur-[150px] rounded-full pointer-events-none" />
 
         <div className="relative z-10 pt-32 pb-12 px-6 max-w-7xl mx-auto">
-          
-          {/* --- DYNAMIC HEADER --- */}
+         {/* --- DYNAMIC HEADER --- */}
           <div className="mb-16 relative animate-in slide-in-from-top-4 duration-700">
              <div 
                onClick={() => navigate('/intelligence')}
                className="flex items-center gap-2 mb-3 cursor-pointer group"
              >
-                 <div className="flex h-3 w-3 relative">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-neon-cyan opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-3 w-3 bg-neon-cyan"></span>
-                 </div>
-                 <span className="text-xs font-mono text-neon-cyan tracking-[0.2em] uppercase group-hover:underline transition-all">
-                    {isNewUser ? "INITIATING ONBOARDING SEQUENCE" : "SYSTEM OPERATIONAL // VIEW INTELLIGENCE BANK"}
-                 </span>
              </div>
 
-             <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-white leading-tight uppercase">
+             <h1 className="text-5xl md:text-4xl font-black tracking-tighter text-white leading-tight uppercase">
                {isNewUser ? (
                  <>WELCOME, <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan via-white to-purple-500 animate-gradient-x">{firstName}</span></>
                ) : (
@@ -106,7 +98,6 @@ const Hub = () => {
                )}
              </h1>
           </div>
-
           {/* --- MAIN GRID --- */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
             
