@@ -225,7 +225,7 @@ const Auth = () => {
               {isSignUp ? "Initialize Profile" : "System Access"}
             </h2>
             <p className="text-sm text-gray-400">
-              {isSignUp ? "Enter your coordinates to begin the simulation." : "Provide credentials to resume training."}
+              {isSignUp ? "Enter your  credentials to begin the simulation." : "Provide credentials to resume training."}
             </p>
           </div>
 
