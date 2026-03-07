@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Pointing to your Live Render Server
 const api = axios.create({
-  baseURL: 'https://prepnerveserver.onrender.com', 
+  baseURL: 'http://localhost:3001', 
   headers: {
     "Content-Type": "application/json",
   },

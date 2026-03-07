@@ -14,9 +14,10 @@ import Hub from "./pages/Hub";
 import Sessions from "./pages/Sessions";
 import Profile from "./pages/Profile";
 import About from "./pages/About";
-import Analytics from "./pages/Analytics";
+// ✅ Renamed to AnalyticsPage to avoid collision with Vercel Analytics
+import AnalyticsPage from "./pages/Analytics"; 
 import NotFound from "./pages/NotFound";
-import QuestionBank from "./pages/QuestionBank"; // ✅ IMPORT NEW PAGE
+import QuestionBank from "./pages/QuestionBank"; 
 
 // --- FEATURES ---
 import CVUpload from "./pages/CVUpload";
@@ -26,7 +27,9 @@ import InterviewSession from "./pages/InterviewSession";
 import BattleLobby from "./pages/BattleLobby";
 import BattleArena from "./pages/BattleArena";
 
+// --- VERCEL ---
 import { SpeedInsights } from "@vercel/speed-insights/react";
+import { Analytics } from "@vercel/analytics/react"; // ✅ IMPORT VERCEL ANALYTICS
 
 const queryClient = new QueryClient();
 
@@ -45,8 +48,8 @@ const AnimatedRoutes = () => {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/sessions" element={<Sessions />} />
-        <Route path="/analytics" element={<Analytics />} />
-        <Route path="/intelligence" element={<QuestionBank />} /> {/* ✅ ADD THIS ROUTE */}
+        <Route path="/analytics" element={<AnalyticsPage />} /> {/* ✅ Updated to use the renamed import */}
+        <Route path="/intelligence" element={<QuestionBank />} />
 
         <Route path="/cv-upload" element={<CVUpload />} />
         <Route path="/cv-score" element={<CVScore />} />
@@ -73,7 +76,10 @@ const App = () => (
           <AnimatedRoutes />
         </BrowserRouter>
         
+        {/* Vercel Tracking Components */}
         <SpeedInsights />
+        <Analytics /> {/* ✅ ADDED VERCEL ANALYTICS COMPONENT HERE */}
+
       </TooltipProvider>
     </AuthProvider>
   </QueryClientProvider>

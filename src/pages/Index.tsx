@@ -397,7 +397,7 @@ const Index = () => {
                          whileHover={{ scale: 1.01 }}
                        >
                          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-90" />
-                         <div className="absolute inset-0 bg-gradient-to-br from-cyan-900/20 to-blue-900/20" />
+                         <div className="absolute inset-0 bg-gradient-to-br from-cyan-900/20 to-blue-900/200" />
                          
                          <div className="relative h-full p-10 flex flex-col justify-end z-10">
                              <div className="mb-6">
