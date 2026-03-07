@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"; 
+import { useState, useEffect, useMemo, memo } from "react"; 
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom"; 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,29 +17,43 @@ const GoogleIcon = () => (
   </svg>
 );
 
-// Floating Particles Component
-const Particles = () => {
+// Floating Particles Component (Memoized so it doesn't jump on typing)
+const Particles = memo(() => {
+  const particlesData = useMemo(() => {
+    return [...Array(20)].map((_, i) => ({
+      id: i,
+      size: Math.random() * 6 + 2,
+      top: Math.random() * 100,
+      left: Math.random() * 100,
+      opacity: Math.random() * 0.5 + 0.3,
+      yDest: Math.random() * -50 - 20,
+      xDest: Math.random() * 30 - 15,
+      duration: Math.random() * 3 + 3,
+      isEven: i % 2 === 0,
+    }));
+  }, []);
+
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {[...Array(20)].map((_, i) => (
+      {particlesData.map((p) => (
         <motion.div
-          key={i}
-          className={`absolute rounded-full ${i % 2 === 0 ? 'bg-blue-400' : 'bg-red-500'}`}
+          key={p.id}
+          className={`absolute rounded-full ${p.isEven ? 'bg-blue-400' : 'bg-red-500'}`}
           style={{
-            width: Math.random() * 6 + 2 + 'px',
-            height: Math.random() * 6 + 2 + 'px',
-            top: Math.random() * 100 + '%',
-            left: Math.random() * 100 + '%',
-            opacity: Math.random() * 0.5 + 0.3,
-            boxShadow: `0 0 10px ${i % 2 === 0 ? '#3b82f6' : '#ef4444'}`,
+            width: `${p.size}px`,
+            height: `${p.size}px`,
+            top: `${p.top}%`,
+            left: `${p.left}%`,
+            opacity: p.opacity,
+            boxShadow: `0 0 10px ${p.isEven ? '#3b82f6' : '#ef4444'}`,
           }}
           animate={{
-            y: [0, Math.random() * -50 - 20],
-            x: [0, Math.random() * 30 - 15],
-            opacity: [0.8, 0],
+            y: [0, p.yDest],
+            x: [0, p.xDest],
+            opacity: [p.opacity, 0],
           }}
           transition={{
-            duration: Math.random() * 3 + 3,
+            duration: p.duration,
             repeat: Infinity,
             ease: "linear",
           }}
@@ -47,7 +61,8 @@ const Particles = () => {
       ))}
     </div>
   );
-};
+});
+Particles.displayName = "Particles";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -142,7 +157,7 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#060813] relative overflow-hidden font-sans selection:bg-cyan-500/30 text-white p-4">
+    <div className="min-h-screen flex items-center justify-center bg-[#060813] relative overflow-hidden font-sans selection:bg-purple-500/30 text-white p-4">
       
       {/* Background Grid & Particles */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:4rem_4rem] z-0" />
@@ -186,6 +201,8 @@ const Auth = () => {
 
           {/* Glowing background aura behind image */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-purple-500/10 blur-[100px] rounded-full z-0" />
+
+          {/* Generated Image directly from the URL or public folder */}
           
         </div>
 
@@ -225,7 +242,7 @@ const Auth = () => {
               {isSignUp ? "Initialize Profile" : "System Access"}
             </h2>
             <p className="text-sm text-gray-400">
-              {isSignUp ? "Enter your  credentials to begin the simulation." : "Provide credentials to resume training."}
+              {isSignUp ? "Enter your coordinates to begin the simulation." : "Provide credentials to resume training."}
             </p>
           </div>
 
@@ -244,7 +261,7 @@ const Auth = () => {
                     value={fullName} 
                     onChange={(e) => setFullName(e.target.value)} 
                     required 
-                    className="w-full h-14 rounded-full bg-transparent border border-blue-500/40 text-white px-6 focus:border-red-500 focus:ring-0 focus:shadow-[0_0_15px_rgba(239,68,68,0.3)] transition-all placeholder:text-gray-600"
+                    className="w-full h-14 rounded-full bg-transparent border border-blue-500/40 text-white px-6 focus:bg-transparent focus:border-purple-500 focus:ring-0 focus:shadow-[0_0_15px_rgba(168,85,247,0.3)] transition-all placeholder:text-gray-600 [&:-webkit-autofill]:bg-transparent [&:-webkit-autofill]:[-webkit-text-fill-color:white] [&:-webkit-autofill]:[transition:background-color_9999999s_ease-in-out_0s]"
                   />
                 </motion.div>
               )}
@@ -258,7 +275,7 @@ const Auth = () => {
                 value={email} 
                 onChange={(e) => setEmail(e.target.value)} 
                 required 
-                className="w-full h-14 rounded-full bg-transparent border border-blue-500/40 text-white px-6 focus:border-red-500 focus:ring-0 focus:shadow-[0_0_15px_rgba(239,68,68,0.3)] transition-all placeholder:text-gray-600"
+                className="w-full h-14 rounded-full bg-transparent border border-purple-500/40 text-white px-6 focus:bg-transparent focus:border-purple-500 focus:ring-0 focus:shadow-[0_0_15px_rgba(168,85,247,0.3)] transition-all placeholder:text-gray-600 [&:-webkit-autofill]:bg-transparent [&:-webkit-autofill]:[-webkit-text-fill-color:white] [&:-webkit-autofill]:[transition:background-color_9999999s_ease-in-out_0s]"
               />
             </div>
 
@@ -270,7 +287,7 @@ const Auth = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full h-14 rounded-full bg-transparent border border-blue-500/40 text-white px-6 pr-14 focus:border-red-500 focus:ring-0 focus:shadow-[0_0_15px_rgba(239,68,68,0.3)] transition-all placeholder:text-gray-600"
+                className="w-full h-14 rounded-full bg-transparent border border-red-500/40 text-white px-6 pr-14 focus:bg-transparent focus:border-red-500 focus:ring-0 focus:shadow-[0_0_15px_rgba(239,68,68,0.3)] transition-all placeholder:text-gray-600 [&:-webkit-autofill]:bg-transparent [&:-webkit-autofill]:[-webkit-text-fill-color:white] [&:-webkit-autofill]:[transition:background-color_9999999s_ease-in-out_0s]"
               />
               <button
                 type="button"
@@ -284,7 +301,7 @@ const Auth = () => {
             <Button 
               type="submit" 
               disabled={loading}
-              className="w-full h-14 rounded-full bg-transparent border border-red-500/50 hover:bg-red-500/10 text-red-400 hover:text-red-300 font-bold uppercase tracking-widest transition-all mt-4 shadow-[0_0_20px_rgba(239,68,68,0.1)] hover:shadow-[0_0_30px_rgba(239,68,68,0.3)]"
+              className="w-full h-14 rounded-full bg-transparent border border-purple-500/50 hover:bg-purple-500/10 text-purple-400 hover:text-purple-300 font-bold uppercase tracking-widest transition-all mt-4 shadow-[0_0_20px_rgba(168,85,247,0.1)] hover:shadow-[0_0_30px_rgba(168,85,247,0.3)]"
             >
               {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : (isSignUp ? "Initialize" : "Authenticate")}
             </Button>
@@ -312,7 +329,7 @@ const Auth = () => {
             {isSignUp ? "Already initialized?" : "Need an identity?"}{" "}
             <button 
               onClick={() => setIsSignUp(!isSignUp)} 
-              className="text-blue-400 hover:text-blue-300 font-bold uppercase tracking-wider transition-colors ml-1"
+              className="text-purple-400 hover:text-purple-300 font-bold uppercase tracking-wider transition-colors ml-1"
             >
               {isSignUp ? "Sign In" : "Sign Up"}
             </button>
