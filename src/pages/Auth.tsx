@@ -326,7 +326,7 @@ const Auth = () => {
           </div>
 
           <p className="text-center md:text-left text-sm text-gray-500 mt-10 max-w-md mx-auto md:mx-0">
-            {isSignUp ? "Already initialized?" : "Need an identity?"}{" "}
+            {isSignUp ? "Already have account?" : "Need an identity?"}{" "}
             <button 
               onClick={() => setIsSignUp(!isSignUp)} 
               className="text-purple-400 hover:text-purple-300 font-bold uppercase tracking-wider transition-colors ml-1"
